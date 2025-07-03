@@ -1,4 +1,6 @@
 
+# Kubernetes Topics to learn
+
 ---
 
 ## 🧠 **Level 1: Kubernetes Basics (Foundational)**
@@ -190,5 +192,3 @@
 * Learn cloud-native design patterns.
 
 ---
-
-Would you like a **PDF roadmap** or **mind map** version of this to track your learning visually?
