@@ -1,0 +1,1193 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-node-datastreams
+  namespace: kube-system
+  labels:
+    k8s-app: elastic-agent
+data:
+  agent.yml: |-
+    id: 8c7b8dd0-5372-11f0-8b9a-cf00661effaf
+    outputs:
+      default:
+        type: elasticsearch
+        hosts:
+          - 'http://localhost:9200'
+        username: '${ES_USERNAME}'
+        password: '${ES_PASSWORD}'
+    inputs:
+      - id: logfile-system-a3ded84b-a776-4676-afb5-f7ca807e4345
+        revision: 1
+        name: system-1
+        type: logfile
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: a3ded84b-a776-4676-afb5-f7ca807e4345
+        streams:
+          - id: logfile-system.auth-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: logs
+              dataset: system.auth
+            ignore_older: 72h
+            paths:
+              - /var/log/auth.log*
+              - /var/log/secure*
+            exclude_files:
+              - .gz$
+            multiline:
+              pattern: ^\s
+              match: after
+            tags:
+              - system-auth
+            processors:
+              - add_locale: null
+          - id: logfile-system.syslog-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: logs
+              dataset: system.syslog
+            paths:
+              - /var/log/messages*
+              - /var/log/syslog*
+            exclude_files:
+              - .gz$
+            multiline:
+              pattern: ^\s
+              match: after
+            processors:
+              - add_locale: null
+            ignore_older: 72h
+        meta:
+          package:
+            name: system
+            version: 1.25.2
+      - id: winlog-system-a3ded84b-a776-4676-afb5-f7ca807e4345
+        revision: 1
+        name: system-1
+        type: winlog
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: a3ded84b-a776-4676-afb5-f7ca807e4345
+        streams:
+          - id: winlog-system.application-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: logs
+              dataset: system.application
+            name: Application
+            condition: '${host.platform} == ''windows'''
+            ignore_older: 72h
+          - id: winlog-system.security-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: logs
+              dataset: system.security
+            name: Security
+            condition: '${host.platform} == ''windows'''
+            ignore_older: 72h
+          - id: winlog-system.system-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: logs
+              dataset: system.system
+            name: System
+            condition: '${host.platform} == ''windows'''
+            ignore_older: 72h
+        meta:
+          package:
+            name: system
+            version: 1.25.2
+      - id: system/metrics-system-a3ded84b-a776-4676-afb5-f7ca807e4345
+        revision: 1
+        name: system-1
+        type: system/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: a3ded84b-a776-4676-afb5-f7ca807e4345
+        streams:
+          - id: system/metrics-system.cpu-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.cpu
+            metricsets:
+              - cpu
+            cpu.metrics:
+              - percentages
+              - normalized_percentages
+            period: 10s
+          - id: system/metrics-system.diskio-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.diskio
+            metricsets:
+              - diskio
+            diskio.include_devices: null
+            period: 10s
+          - id: >-
+              system/metrics-system.filesystem-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.filesystem
+            metricsets:
+              - filesystem
+            period: 1m
+            processors:
+              - drop_event.when.regexp:
+                  system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
+          - id: system/metrics-system.fsstat-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.fsstat
+            metricsets:
+              - fsstat
+            period: 1m
+            processors:
+              - drop_event.when.regexp:
+                  system.fsstat.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
+          - id: system/metrics-system.load-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.load
+            metricsets:
+              - load
+            condition: '${host.platform} != ''windows'''
+            period: 10s
+          - id: system/metrics-system.memory-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.memory
+            metricsets:
+              - memory
+            period: 10s
+          - id: system/metrics-system.network-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.network
+            metricsets:
+              - network
+            period: 10s
+            network.interfaces: null
+          - id: system/metrics-system.process-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.process
+            metricsets:
+              - process
+            period: 10s
+            process.include_top_n.by_cpu: 5
+            process.include_top_n.by_memory: 5
+            process.cmdline.cache.enabled: true
+            process.cgroups.enabled: false
+            process.include_cpu_ticks: false
+            processes:
+              - .*
+          - id: >-
+              system/metrics-system.process.summary-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.process.summary
+            metricsets:
+              - process_summary
+            period: 10s
+          - id: >-
+              system/metrics-system.socket_summary-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.socket_summary
+            metricsets:
+              - socket_summary
+            period: 10s
+          - id: system/metrics-system.uptime-a3ded84b-a776-4676-afb5-f7ca807e4345
+            data_stream:
+              type: metrics
+              dataset: system.uptime
+            metricsets:
+              - uptime
+            period: 10s
+        meta:
+          package:
+            name: system
+            version: 1.25.2
+      - id: kubernetes/metrics-kubelet-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.container-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.container
+            metricsets:
+              - container
+            add_metadata: true
+            hosts:
+              - 'https://${env.NODE_NAME}:10250'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+          - id: >-
+              kubernetes/metrics-kubernetes.node-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.node
+            metricsets:
+              - node
+            add_metadata: true
+            hosts:
+              - 'https://${env.NODE_NAME}:10250'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+          - id: >-
+              kubernetes/metrics-kubernetes.pod-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.pod
+            metricsets:
+              - pod
+            add_metadata: true
+            hosts:
+              - 'https://${env.NODE_NAME}:10250'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+          - id: >-
+              kubernetes/metrics-kubernetes.system-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.system
+            metricsets:
+              - system
+            add_metadata: true
+            hosts:
+              - 'https://${env.NODE_NAME}:10250'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+          - id: >-
+              kubernetes/metrics-kubernetes.volume-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.volume
+            metricsets:
+              - volume
+            add_metadata: true
+            hosts:
+              - 'https://${env.NODE_NAME}:10250'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: >-
+          kubernetes/metrics-kube-state-metrics-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.state_container-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_container
+            metricsets:
+              - state_container
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_cronjob-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_cronjob
+            metricsets:
+              - state_cronjob
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_daemonset-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_daemonset
+            metricsets:
+              - state_daemonset
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_deployment-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_deployment
+            metricsets:
+              - state_deployment
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_job-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_job
+            metricsets:
+              - state_job
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_node-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_node
+            metricsets:
+              - state_node
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_persistentvolume-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_persistentvolume
+            metricsets:
+              - state_persistentvolume
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_persistentvolumeclaim-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_persistentvolumeclaim
+            metricsets:
+              - state_persistentvolumeclaim
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_pod-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_pod
+            metricsets:
+              - state_pod
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_replicaset-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_replicaset
+            metricsets:
+              - state_replicaset
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_resourcequota-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_resourcequota
+            metricsets:
+              - state_resourcequota
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_service-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_service
+            metricsets:
+              - state_service
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_statefulset-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_statefulset
+            metricsets:
+              - state_statefulset
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          - id: >-
+              kubernetes/metrics-kubernetes.state_storageclass-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.state_storageclass
+            metricsets:
+              - state_storageclass
+            add_metadata: true
+            hosts:
+              - 'kube-state-metrics:8080'
+            period: 10s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: kubernetes/metrics-kube-apiserver-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.apiserver-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.apiserver
+            metricsets:
+              - apiserver
+            hosts:
+              - >-
+                https://${env.KUBERNETES_SERVICE_HOST}:${env.KUBERNETES_SERVICE_PORT}
+            period: 30s
+            condition: '${kubernetes_leaderelection.leader} == true'
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.certificate_authorities:
+              - /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: kubernetes/metrics-kube-proxy-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.proxy-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.proxy
+            metricsets:
+              - proxy
+            hosts:
+              - 'localhost:10249'
+            period: 10s
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: kubernetes/metrics-kube-scheduler-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.scheduler-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.scheduler
+            metricsets:
+              - scheduler
+            hosts:
+              - 'https://0.0.0.0:10259'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+            condition: '${kubernetes.labels.component} == ''kube-scheduler'''
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: >-
+          kubernetes/metrics-kube-controller-manager-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.controllermanager-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.controllermanager
+            metricsets:
+              - controllermanager
+            hosts:
+              - 'https://0.0.0.0:10257'
+            period: 10s
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            ssl.verification_mode: none
+            condition: '${kubernetes.labels.component} == ''kube-controller-manager'''
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: kubernetes/metrics-events-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: kubernetes/metrics
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes/metrics-kubernetes.event-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: metrics
+              dataset: kubernetes.event
+            metricsets:
+              - event
+            period: 10s
+            add_metadata: true
+            skip_older: true
+            condition: '${kubernetes_leaderelection.leader} == true'
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: filestream-container-logs-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: filestream
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              kubernetes-container-logs-${kubernetes.pod.name}-${kubernetes.container.id}
+            data_stream:
+              type: logs
+              dataset: kubernetes.container_logs
+            paths:
+              - '/var/log/containers/*${kubernetes.container.id}.log'
+            prospector.scanner.symlinks: true
+            parsers:
+              - container:
+                  stream: all
+                  format: auto
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+      - id: filestream-audit-logs-0e04eaee-9205-4bca-92df-470f08361fee
+        revision: 1
+        name: kubernetes-1
+        type: filestream
+        data_stream:
+          namespace: default
+        use_output: default
+        package_policy_id: 0e04eaee-9205-4bca-92df-470f08361fee
+        streams:
+          - id: >-
+              filestream-kubernetes.audit_logs-0e04eaee-9205-4bca-92df-470f08361fee
+            data_stream:
+              type: logs
+              dataset: kubernetes.audit_logs
+            paths:
+              - /var/log/kubernetes/kube-apiserver-audit.log
+            exclude_files:
+              - .gz$
+            parsers:
+              - ndjson:
+                  add_error_key: true
+                  target: kubernetes_audit
+            processors:
+              - rename:
+                  fields:
+                    - from: kubernetes_audit
+                      to: kubernetes.audit
+              - drop_fields:
+                  when:
+                    has_fields: kubernetes.audit.responseObject
+                  fields:
+                    - kubernetes.audit.responseObject.metadata
+              - drop_fields:
+                  when:
+                    has_fields: kubernetes.audit.requestObject
+                  fields:
+                    - kubernetes.audit.requestObject.metadata
+              - script:
+                  lang: javascript
+                  id: dedot_annotations
+                  source: |
+                    function process(event) {
+                      var audit = event.Get("kubernetes.audit");
+                      for (var annotation in audit["annotations"]) {
+                        var annotation_dedoted = annotation.replace(/\./g,'_')
+                        event.Rename("kubernetes.audit.annotations."+annotation, "kubernetes.audit.annotations."+annotation_dedoted)
+                      }
+                      return event;
+                    } function test() {
+                      var event = process(new Event({ "kubernetes": { "audit": { "annotations": { "authorization.k8s.io/decision": "allow", "authorization.k8s.io/reason": "RBAC: allowed by ClusterRoleBinding \"system:kube-scheduler\" of ClusterRole \"system:kube-scheduler\" to User \"system:kube-scheduler\"" } } } }));
+                      if (event.Get("kubernetes.audit.annotations.authorization_k8s_io/decision") !== "allow") {
+                          throw "expected kubernetes.audit.annotations.authorization_k8s_io/decision === allow";
+                      }
+                    }
+        meta:
+          package:
+            name: kubernetes
+            version: 1.29.2
+    revision: 2
+    agent:
+      download:
+        source_uri: 'https://artifacts.elastic.co/downloads/'
+      monitoring:
+        namespace: default
+        use_output: default
+        enabled: true
+        logs: true
+        metrics: true
+    output_permissions:
+      default:
+        _elastic_agent_monitoring:
+          indices:
+            - names:
+                - logs-elastic_agent.apm_server-default
+              privileges: &ref_0
+                - auto_configure
+                - create_doc
+            - names:
+                - metrics-elastic_agent.apm_server-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.auditbeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.auditbeat-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.cloud_defend-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.cloudbeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.cloudbeat-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.elastic_agent-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.endpoint_security-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.endpoint_security-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.filebeat_input-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.filebeat_input-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.filebeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.filebeat-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.fleet_server-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.fleet_server-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.heartbeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.heartbeat-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.metricbeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.metricbeat-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.osquerybeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.osquerybeat-default
+              privileges: *ref_0
+            - names:
+                - logs-elastic_agent.packetbeat-default
+              privileges: *ref_0
+            - names:
+                - metrics-elastic_agent.packetbeat-default
+              privileges: *ref_0
+        _elastic_agent_checks:
+          cluster:
+            - monitor
+        a3ded84b-a776-4676-afb5-f7ca807e4345:
+          indices:
+            - names:
+                - logs-system.auth-default
+              privileges: *ref_0
+            - names:
+                - logs-system.syslog-default
+              privileges: *ref_0
+            - names:
+                - logs-system.application-default
+              privileges: *ref_0
+            - names:
+                - logs-system.security-default
+              privileges: *ref_0
+            - names:
+                - logs-system.system-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.cpu-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.diskio-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.filesystem-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.fsstat-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.load-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.memory-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.network-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.process-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.process.summary-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.socket_summary-default
+              privileges: *ref_0
+            - names:
+                - metrics-system.uptime-default
+              privileges: *ref_0
+        0e04eaee-9205-4bca-92df-470f08361fee:
+          indices:
+            - names:
+                - metrics-kubernetes.container-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.node-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.pod-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.system-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.volume-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_container-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_cronjob-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_daemonset-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_deployment-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_job-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_node-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_persistentvolume-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_persistentvolumeclaim-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_pod-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_replicaset-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_resourcequota-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_service-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_statefulset-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.state_storageclass-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.apiserver-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.proxy-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.scheduler-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.controllermanager-default
+              privileges: *ref_0
+            - names:
+                - metrics-kubernetes.event-default
+              privileges: *ref_0
+            - names:
+                - logs-kubernetes.container_logs-default
+              privileges: *ref_0
+            - names:
+                - logs-kubernetes.audit_logs-default
+              privileges: *ref_0
+
+---
+# For more information refer https://www.elastic.co/guide/en/fleet/current/running-on-kubernetes-standalone.html
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: elastic-agent
+  namespace: kube-system
+  labels:
+    app: elastic-agent
+spec:
+  selector:
+    matchLabels:
+      app: elastic-agent
+  template:
+    metadata:
+      labels:
+        app: elastic-agent
+    spec:
+      # Tolerations are needed to run Elastic Agent on Kubernetes control-plane nodes.
+      # Agents running on control-plane nodes collect metrics from the control plane components (scheduler, controller manager) of Kubernetes
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      serviceAccountName: elastic-agent
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: elastic-agent
+          image: docker.elastic.co/beats/elastic-agent:8.5.1
+          args: [
+            "-c", "/etc/agent.yml",
+            "-e",
+          ]
+          env:
+            # The basic authentication username used to connect to Elasticsearch
+            # This user needs the privileges required to publish events to Elasticsearch.
+            - name: ES_USERNAME
+              value: "elastic"
+            # The basic authentication password used to connect to Elasticsearch
+            - name: ES_PASSWORD
+              value: "changeme"
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          securityContext:
+            runAsUser: 0
+          resources:
+            limits:
+              memory: 700Mi
+            requests:
+              cpu: 100m
+              memory: 400Mi
+          volumeMounts:
+            - name: datastreams
+              mountPath: /etc/agent.yml
+              readOnly: true
+              subPath: agent.yml
+            - name: proc
+              mountPath: /hostfs/proc
+              readOnly: true
+            - name: cgroup
+              mountPath: /hostfs/sys/fs/cgroup
+              readOnly: true
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+            - name: varlog
+              mountPath: /var/log
+              readOnly: true
+            - name: etc-kubernetes
+              mountPath: /hostfs/etc/kubernetes
+              readOnly: true
+            - name: var-lib
+              mountPath: /hostfs/var/lib
+              readOnly: true
+            - name: passwd
+              mountPath: /hostfs/etc/passwd
+              readOnly: true
+            - name: group
+              mountPath: /hostfs/etc/group
+              readOnly: true
+            - name: etcsysmd
+              mountPath: /hostfs/etc/systemd
+              readOnly: true
+      volumes:
+        - name: datastreams
+          configMap:
+            defaultMode: 0640
+            name: agent-node-datastreams
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: cgroup
+          hostPath:
+            path: /sys/fs/cgroup
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
+        - name: varlog
+          hostPath:
+            path: /var/log
+        # Needed for cloudbeat
+        - name: etc-kubernetes
+          hostPath:
+            path: /etc/kubernetes
+        # Needed for cloudbeat
+        - name: var-lib
+          hostPath:
+            path: /var/lib
+        # Needed for cloudbeat
+        - name: passwd
+          hostPath:
+            path: /etc/passwd
+        # Needed for cloudbeat
+        - name: group
+          hostPath:
+            path: /etc/group
+        # Needed for cloudbeat
+        - name: etcsysmd
+          hostPath:
+            path: /etc/systemd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: elastic-agent
+subjects:
+  - kind: ServiceAccount
+    name: elastic-agent
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: elastic-agent
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: kube-system
+  name: elastic-agent
+subjects:
+  - kind: ServiceAccount
+    name: elastic-agent
+    namespace: kube-system
+roleRef:
+  kind: Role
+  name: elastic-agent
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: elastic-agent-kubeadm-config
+  namespace: kube-system
+subjects:
+  - kind: ServiceAccount
+    name: elastic-agent
+    namespace: kube-system
+roleRef:
+  kind: Role
+  name: elastic-agent-kubeadm-config
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: elastic-agent
+  labels:
+    k8s-app: elastic-agent
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - namespaces
+      - events
+      - pods
+      - services
+      - configmaps
+      # Needed for cloudbeat
+      - serviceaccounts
+      - persistentvolumes
+      - persistentvolumeclaims
+    verbs: ["get", "list", "watch"]
+  # Enable this rule only if planing to use kubernetes_secrets provider
+  #- apiGroups: [""]
+  #  resources:
+  #  - secrets
+  #  verbs: ["get"]
+  - apiGroups: ["extensions"]
+    resources:
+      - replicasets
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources:
+      - statefulsets
+      - deployments
+      - replicasets
+      - daemonsets
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["get", "list", "watch"]
+  - apiGroups:
+      - ""
+    resources:
+      - nodes/stats
+    verbs:
+      - get
+  # Needed for apiserver
+  - nonResourceURLs:
+      - "/metrics"
+    verbs:
+      - get
+  # Needed for cloudbeat
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources:
+      - clusterrolebindings
+      - clusterroles
+      - rolebindings
+      - roles
+    verbs: ["get", "list", "watch"]
+  # Needed for cloudbeat
+  - apiGroups: ["policy"]
+    resources:
+      - podsecuritypolicies
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: elastic-agent
+  # Should be the namespace where elastic-agent is running
+  namespace: kube-system
+  labels:
+    k8s-app: elastic-agent
+rules:
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs: ["get", "create", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: elastic-agent-kubeadm-config
+  namespace: kube-system
+  labels:
+    k8s-app: elastic-agent
+rules:
+  - apiGroups: [""]
+    resources:
+      - configmaps
+    resourceNames:
+      - kubeadm-config
+    verbs: ["get"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: elastic-agent
+  namespace: kube-system
+  labels:
+    k8s-app: elastic-agent
+---
