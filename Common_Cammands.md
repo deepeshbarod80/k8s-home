@@ -3,136 +3,151 @@
 
 ### Pod Commands:-
 ```bash
-kubectl get pod : Get pod
-kubectl get pod -o wide : Get pod wide information
-kubectl get pod -w : Get pod with watch
-kubectl get pod -o yaml : Get pod in yaml
-kubectl edit pod <pod_name> : Edit pod
-kubectl describe pod <pod_name> : Describe pod
-kubectl delete pod <pod_name> : Delete pod
-kubectl logs pod <pod_name> : Logs of the pod
-kubectl exec -it pod <pod_name> /bin/bash : Execute into pod
+kubectl get pod                    # Get pod
+kubectl get pod -o wide            # Get pod wide information
+kubectl get pod -w                 # Get pod with watch
+kubectl get pod -o yaml            # Get pod in yaml
+kubectl edit pod <pod_name>        # Edit pod
+kubectl describe pod <pod_name>    # Describe pod
+kubectl delete pod <pod_name>      # Delete pod
+kubectl logs pod <pod_name>        # Logs of the pod
+kubectl exec -it pod <pod_name> /bin/bash   # Execute into pod
 ```
 
 ### Node Commands:-
 ```bash
-kubectl describe node <node_name> : Describe node
-kubectl get node <node_name> -o yaml: Get node in
-kubectl get node <node_name> : Get node yaml
-kubectl drain node <node_name> : Drain node
-kubectl cordon node <node_name> : Cordon node
-kubectl uncordon node <node_name> : Uncordon node
+kubectl describe node <node_name>     # Describe node
+kubectl get node <node_name> -o yaml  # Get node in
+kubectl get node <node_name>          # Get node yaml
+kubectl drain node <node_name>        # Drain node
+kubectl cordon node <node_name>       # Cordon node
+kubectl uncordon node <node_name>     # Uncordon node
 ```
 
 ### Creating Objects:-
 ```bash
-kubectl apply -f <file_name> yaml : Create resource
-kubectl apply -f <file_name>.yaml -f <file_name>.yaml : Create from multiple files
-kubectl apply -f ./ <directory_name> : Create all files in directory
-kubectl apply -f https:// <url> : Create from url
-kubectl run <pod_name> --image <image_name> : Create pod
+kubectl apply -f <file_name> yaml                      # Create resource
+kubectl apply -f <file_name>.yaml -f <file_name>.yaml  # Create from multiple files
+kubectl apply -f ./ <directory_name>                   # Create all files in directory
+kubectl apply -f https:// <url>                        # Create from url
+kubectl run <pod_name> --image <image_name>            # Create pod
 
-kubectl run <pod_name> --image <image_name> --port <port> --expose : Create pod, then expose it as service
+# Create pod, then expose it as service
+kubectl run <pod_name> --image <image_name> --port <port> --expose  
 
-kubectl run <pod_name> --image=<image_name> --dry-run=client -o yaml > <file_name>.yaml : Create Pod YAML File
+# Create Pod YAML File in dry run mode
+kubectl run <pod_name> --image=<image_name> --dry-run=client -o yaml > <file_name>.yaml 
 
-kubectl create deployment <deployment_name> --image=<image_name> : Create Deployment
+# Create Deployment 
+kubectl create deployment <deployment_name> --image=<image_name>
 
-kubectl create deployment <deployment_name> --image=<image_name> --dry-run=client -o yaml >
-<file_name>.yaml : Create Deployment YAML File
+# Create Deployment YAML File in dry run mode
+kubectl create deployment <deployment_name> --image=<image_name> -o yaml > <file_name>.yaml
 
-kubectl create service <service-type><service_name> --tcp=<port:target_port> : Create Servicekubectl create service <service-type> <service_name> --tcp=<port:target_port> --dry-run=client -o yaml > <file_name>.yaml : Create Service YAML File
+# Create Service YAML File
+kubectl create service <service-type><service_name> --tcp=<port:target_port> : Create Servicekubectl create service <service-type> <service_name> --tcp=<port:target_port> -o yaml > <file_name>.yaml
 
-kubectl expose deployment <pod/deployment_name> --type=<service-type> --port=<port> --target-port=<target_port> : Expose Service from Pod/Deployment
+# Expose Service from Pod/Deployment
+kubectl expose deployment <pod/deployment_name> --type=<service-type> --port=<port> --target-port=<target_port>
 
-kubectl create configmap <configmap_name> --from-literal=<key>=<value> --from-literal=<key>=
-<value> : Create ConfigMap from Key-Value Pairs
+# Create ConfigMap from Key-Value Pairs
+kubectl create configmap <configmap_name> --from-literal=<key>=<value> --from-literal=<key>=<value>        
 
-kubectl create configmap <configmap_name> --from-file=<file_name> : Create ConfigMap from File
+# Create ConfigMap from File
+kubectl create configmap <configmap_name> --from-file=<file_name>
 
-kubectl create configmap <configmap_name> --from-env-file=<file_name> : Create ConfigMap from Environment File
+# Create ConfigMap from Environment File
+kubectl create configmap <configmap_name> --from-env-file=<file_name>  
 
+# Create Secret from Key-Value Pairs
 kubectl create secret generic <secret_name> --from-literal=<key>=<value> --from-literal=<key>=
-<value> : Create Secret from Key-Value Pairs
+<value>               
 
-kubectl create secret generic <secret_name> --from-file=<file_name> : Create Secret from File
+# Create Secret from File
+kubectl create secret generic <secret_name> --from-file=<file_name>       
 ```
 
 ### Monitoring Usage Commands:-
 ```bash
-kubectl top node <node_name> : Get node cpu and memory utilization
-kubectl top pods <pod_name> : Get pod cpu and memory utilization
+kubectl top node <node_name>                  # Get node cpu and memory utilization
+kubectl top pods <pod_name>                   # Get pod cpu and memory utilization
 ```
 
 ### Deployment Commands:-
 ```bash
-kubectl get deployment <deployment_name> : Get Deployment
-kubectl get deployment <deployment_name> -o yaml : Get Deployment in YAML Format
-kubectl get deployment <deployment_name> -o wide : Get Deployment Wide Information
-kubectl edit deployment <deployment_name> : Edit Deployment
-kubectl describe deployment <deployment_name> : Describe Deployment
-kubectl delete deployment <deployment_name> : Delete Deployment
-kubectl scale deployment <deployment_name> --replicas=<replicas> : Scale Deployment Replicas
+kubectl get deployment <deployment_name>              # Get Deployment
+kubectl get deployment <deployment_name> -o yaml      # Get Deployment in YAML Format
+kubectl get deployment <deployment_name> -o wide      # Get Deployment Wide Information
+kubectl edit deployment <deployment_name>             # Edit Deployment
+kubectl describe deployment <deployment_name>         # Describe Deployment
+kubectl delete deployment <deployment_name>           # Delete Deployment
+kubectl scale deployment <deployment_name> --replicas=<replicas>  # Scale Deployment Replicas
 ```
 
 ### Service Commands:-
 ```bash
-kubectl get service <service> : Get Service
-kubectl get service <service> -o yaml : Get Service in YAML Format
-kubectl get service <service> -o wide : Get Service Wide Information
-kubectl edit service <service> : Edit Service
-kubectl describe service <service> : Describe Service
-kubectl delete service <service> : Delete Service
+kubectl get service <service>                   # Get Service
+kubectl get service <service> -o yaml           # Get Service in YAML Format
+kubectl get service <service> -o wide           # Get Service Wide Information
+kubectl edit service <service>                  # Edit Service
+kubectl describe service <service>              # Describe Service
+kubectl delete service <service>                # Delete Service
 ```
 
 ### Ingress Commands:-
 ```bash
-kubectl get ingress ; Get Ingress
-kubectl get ingress -o yaml : Get Ingress in YAML Format
-kubectl get ingress -o wide : Get Ingress Wide Information
-kubectl edit ingress <ingress_name> : Edit Ingress
-kubectl describe ingress <ingress_name> : Describe Ingress
-kubectl delete ingress <ingress_name> : Delete Ingress
+kubectl get ingress                             # Get Ingress resources
+kubectl get ingress -o yaml                     # Get Ingress in YAML Format
+kubectl get ingress -o wide                     # Get Ingress Wide Information
+kubectl edit ingress <ingress_name>             # Edit Ingress
+kubectl describe ingress <ingress_name>         # Describe Ingress
+kubectl delete ingress <ingress_name>           # Delete Ingress
 ```
 
 ### Endpoints Commands:-
 ```bash
-kubectl get endpoints <endpoints _name> : Get endpoints
+kubectl get endpoints <endpoints _name>         # Get endpoints
 ```
 
 ### DaemonSet Commands:-
 ```bash
-kubectl get daemonset <daemonset_name> : Get DaemonSet
-kubectl get daemonset <daemonset_name> -o yaml : Get DaemonSet in YAML Format
-kubectl edit daemonset <daemonset_name> : Edit DaemonSet
-kubectl describe daemonset <daemonset_name> : Describe DaemonSet
-kubectl delete daemonset <daemonset_name> : Delete DaemonSet
+kubectl get daemonset <daemonset_name>          # Get DaemonSet
+kubectl get daemonset <daemonset_name> -o yaml  # Get DaemonSet in YAML Format
+kubectl edit daemonset <daemonset_name>         # Edit DaemonSet
+kubectl describe daemonset <daemonset_name>     # Describe DaemonSet
+kubectl delete daemonset <daemonset_name>       # Delete DaemonSet
 ```
 
 ### Job Commands:-
 ```bash
-kubectl get job <job_name> : Get Job
-kubectl get job <job_name> -o yaml : Get Job in YAML
-kubectl edit job <job_name> : Edit Job
-kubectl describe job <job_name> : Format Describe Job
-kubectl delete job <job_name> : Delete Job
+kubectl get job <job_name>               # Get Job details
+kubectl get job <job_name> -o yaml       # Get Job details in YAML format
+kubectl edit job <job_name>              # Edit Job the specific job
+kubectl describe job <job_name>          # Describe a specific Job
+kubectl delete job <job_name>            # Delete a specific Job
 ```
 
 ### Rollout Commands:-
 ```bash
-kubectl rollout restart deployment <deployment_name> : Restart Deployment
-kubectl rollout undo deployment <deployment_name> : Undo Deployment with the Latest Revision
-kubectl rollout undo deployment <deployment_name> --to-revision=<revision_number> : Undo Deployment with Specified Revision
-kubectl rollout history deployment <deployment_name> : Get All Revisions of Deployment 
-kubectl rollout history deployment <deployment_name> --revision=<revision_number> : Get Specified Revision of Deployment
+kubectl rollout restart deployment <deployment_name>  # Restart Deployment
+kubectl rollout undo deployment <deployment_name>     # Undo Deployment with the Latest Revision
+
+# Undo Deployment with Specified Revision
+kubectl rollout undo deployment <deployment_name> --to-revision=<revision_number> 
+
+# Get complete history Revisions of Deployment
+kubectl rollout history deployment <deployment_name>
+
+# Get Specified Revision of Deployment
+kubectl rollout history deployment <deployment_name> --revision=<revision_number>
 ```
 
 ### Secret Commands:-
 ```bash
-kubectl get secret <secret_name> : Get Secret
-kubectl describe secret <secret_name> : Describe Secret
-kubectl delete secret <secret_name> : Delete Secret
-kubectl edit secret <secret_name> : Edit Secret
+kubectl get secret <secret_name>          # Get Secret
+kubectl describe secret <secret_name>     # Describe Secret
+kubectl delete secret <secret_name>       # Delete Secret
+kubectl edit secret <secret_name>         # Edit Secret
 ```
 
 ---
@@ -142,19 +157,19 @@ kubectl edit secret <secret_name> : Edit Secret
 
 ### Cluster Information
 ```bash
-kubectl cluster-info : Display cluster info
-kubectl version : Show client and server versions
-kubectl config current-context : Show current context
-kubectl config get-contexts : List all contexts
-kubectl config use-context <context> : Switch context
+kubectl cluster-info                      # Display cluster info
+kubectl version                           # Show client and server versions
+kubectl config current-context            # Show current context
+kubectl config get-contexts               # List all contexts
+kubectl config use-context <context>      # Switch context
 ```
 
 ### Namespace Operations
 ```bash
-kubectl get namespaces : List all namespaces
-kubectl create namespace <name> : Create a new namespace
-kubectl delete namespace <name> : Delete a namespace
-kubectl config set-context --current --namespace=<name> : Set default namespace
+kubectl get namespaces                                  # List all namespaces
+kubectl create namespace <name>                         # Create a new namespace
+kubectl delete namespace <name>                         # Delete a namespace
+kubectl config set-context --current --namespace=<name> # Set default namespace
 ```
 
 ---
@@ -367,19 +382,21 @@ kubectl top pods --containers       # Resource usage by containers
 ---
 
 
-Quick YAML Templates
-Basic Pod
+## Quick YAML Templates
+
+### Basic Pod
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
-name: my-pod
+  name: my-pod
 spec:
-containers:
-- name: my-container
-image: nginx:latest
-ports:
-- containerPort: 80
-
+  containers:
+  - name: my-container
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+```
 
 ### Basic Deployment
 ```yaml
@@ -393,32 +410,36 @@ spec:
       matchLabels:
          app: my-app
    template:
-     metadata:
+      metadata:
          labels:
            app: my-app
-     spec:
-       containers:
-       - name: my-container
-         image: nginx:latest
-       ports:
-       - containerPort: 80
+      spec:
+        containers:
+        - name: my-container
+          image: nginx:latest
+          ports:
+          - containerPort: 80
 ```
 
 ### Basic Service
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
-name: my-service
+   name: my-service
 spec:
-selector:
-app: my-app
-ports:
-- protocol: TCP
-port: 80
-targetPort: 80
-type: ClusterIP
+   selector:
+     app: my-app
+   ports:
+   - protocol: TCP
+     port: 80
+     targetPort: 80
+   type: ClusterIP
+```
 
-### Helpful Aliases
+---
+
+## Helpful Aliases
 - Add these to your shell profile:
 ```bash
 alias k='kubectl'
@@ -430,21 +451,6 @@ alias kds='kubectl describe service'
 alias kdd='kubectl describe deployment'
 alias kaf='kubectl apply -f'
 alias kdf='kubectl delete -f'
-6/7k8s_cheatsheet.md
-2025-05-26
-
-
-### Tips and Best Practices
-1. Use labels consistently for organizing and selecting resources
-2. Set resource requests and limits to ensure proper scheduling and prevent resource starvation
-3. Use namespaces to organize resources and implement multi-tenancy
-4. Always specify image tags instead of using 'latest' in production
-5. Use liveness and readiness probes for better application health monitoring
-6. Store sensitive data in Secrets, not ConfigMaps
-7. Use kubectl explain to understand resource specifications
-8. Test configurations with --dry-run before applying
-9. Monitor cluster events regularly for troubleshooting
-10. Keep your kubectl version close to your cluster version
-
+```
 
 ---
