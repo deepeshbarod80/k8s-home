@@ -332,3 +332,4 @@ Kubernetes uses **Role-Based Access Control (RBAC)** to manage permissions for S
 - AWS KMS: https://docs.aws.amazon.com/kms/
 - Kubernetes RBAC: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
+

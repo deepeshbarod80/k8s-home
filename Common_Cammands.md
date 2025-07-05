@@ -3,25 +3,25 @@
 
 ### Pod Commands:-
 ```bash
-kubectl get pod                    # Get pod
-kubectl get pod -o wide            # Get pod wide information
-kubectl get pod -w                 # Get pod with watch
-kubectl get pod -o yaml            # Get pod in yaml
-kubectl edit pod <pod_name>        # Edit pod
-kubectl describe pod <pod_name>    # Describe pod
-kubectl delete pod <pod_name>      # Delete pod
-kubectl logs pod <pod_name>        # Logs of the pod
-kubectl exec -it pod <pod_name> /bin/bash   # Execute into pod
+kubectl get pod                                      # Get pod
+kubectl get pod -o wide                              # Get pod wide information
+kubectl get pod -w                                   # Get pod with watch
+kubectl get pod -o yaml                              # Get pod in yaml
+kubectl edit pod <pod_name>                          # Edit pod
+kubectl describe pod <pod_name>                      # Describe pod
+kubectl delete pod <pod_name>                        # Delete pod
+kubectl logs pod <pod_name>                          # Logs of the pod
+kubectl exec -it pod <pod_name> /bin/bash            # Execute into pod
 ```
 
 ### Node Commands:-
 ```bash
-kubectl describe node <node_name>     # Describe node
-kubectl get node <node_name> -o yaml  # Get node in
-kubectl get node <node_name>          # Get node yaml
-kubectl drain node <node_name>        # Drain node
-kubectl cordon node <node_name>       # Cordon node
-kubectl uncordon node <node_name>     # Uncordon node
+kubectl describe node <node_name>                     # Describe node
+kubectl get node <node_name> -o yaml                  # Get node in
+kubectl get node <node_name>                          # Get node yaml
+kubectl drain node <node_name>                        # Drain node
+kubectl cordon node <node_name>                       # Cordon node
+kubectl uncordon node <node_name>                     # Uncordon node
 ```
 
 ### Creating Objects:-
@@ -77,12 +77,12 @@ kubectl top pods <pod_name>                   # Get pod cpu and memory utilizati
 
 ### Deployment Commands:-
 ```bash
-kubectl get deployment <deployment_name>              # Get Deployment
-kubectl get deployment <deployment_name> -o yaml      # Get Deployment in YAML Format
-kubectl get deployment <deployment_name> -o wide      # Get Deployment Wide Information
-kubectl edit deployment <deployment_name>             # Edit Deployment
-kubectl describe deployment <deployment_name>         # Describe Deployment
-kubectl delete deployment <deployment_name>           # Delete Deployment
+kubectl get deployment <deployment_name>                          # Get Deployment
+kubectl get deployment <deployment_name> -o yaml                  # Get Deployment in YAML Format
+kubectl get deployment <deployment_name> -o wide                  # Get Deployment Wide Information
+kubectl edit deployment <deployment_name>                         # Edit Deployment
+kubectl describe deployment <deployment_name>                     # Describe Deployment
+kubectl delete deployment <deployment_name>                       # Delete Deployment
 kubectl scale deployment <deployment_name> --replicas=<replicas>  # Scale Deployment Replicas
 ```
 
@@ -131,8 +131,8 @@ kubectl delete job <job_name>            # Delete a specific Job
 
 ### Rollout Commands:-
 ```bash
-kubectl rollout restart deployment <deployment_name>  # Restart Deployment
-kubectl rollout undo deployment <deployment_name>     # Undo Deployment with the Latest Revision
+kubectl rollout restart deployment <deployment_name>      # Restart Deployment
+kubectl rollout undo deployment <deployment_name>         # Undo Deployment with the Latest Revision
 
 # Undo Deployment with Specified Revision
 kubectl rollout undo deployment <deployment_name> --to-revision=<revision_number> 
@@ -159,19 +159,19 @@ kubectl edit secret <secret_name>         # Edit Secret
 
 ### Cluster Information
 ```bash
-kubectl cluster-info                      # Display cluster info
-kubectl version                           # Show client and server versions
-kubectl config current-context            # Show current context
-kubectl config get-contexts               # List all contexts
-kubectl config use-context <context>      # Switch context
+kubectl cluster-info                                   # Display cluster info
+kubectl version                                        # Show client and server versions
+kubectl config current-context                         # Show current context
+kubectl config get-contexts                            # List all contexts
+kubectl config use-context <context>                   # Switch context
 ```
 
 ### Namespace Operations
 ```bash
-kubectl get namespaces                                  # List all namespaces
-kubectl create namespace <name>                         # Create a new namespace
-kubectl delete namespace <name>                         # Delete a namespace
-kubectl config set-context --current --namespace=<name> # Set default namespace
+kubectl get namespaces                                     # List all namespaces
+kubectl create namespace <name>                            # Create a new namespace
+kubectl delete namespace <name>                            # Delete a namespace
+kubectl config set-context --current --namespace=<name>    # Set default namespace
 ```
 
 ---
@@ -180,29 +180,29 @@ kubectl config set-context --current --namespace=<name> # Set default namespace
 ## Pod Operations
 ### Viewing Pods
 ```bash
-kubectl get pods    # List pods in current namespace
-kubectl get pods -A   # List pods in all namespaces
-kubectl get pods -o wide        # List pods with additional info
-kubectl get pods --show-labels  # List pods with labels
-kubectl get pods -l app=myapp   # List pods with specific label
+kubectl get pods                                  # List pods in current namespace
+kubectl get pods -A                               # List pods in all namespaces
+kubectl get pods -o wide                          # List pods with additional info
+kubectl get pods --show-labels                    # List pods with labels
+kubectl get pods -l app=myapp                     # List pods with specific label
 ```
 
 ### Pod Details
 ```bash
-kubectl describe pod <pod-name>        # Show detailed pod information
-kubectl logs <pod-name>                # Show pod logs
-kubectl logs -f <pod-name>             # Follow pod logs
-kubectl logs <pod-name> -c <container> # Show logs for specific container
-kubectl exec -it <pod-name> -- /bin/bash # Execute shell in pod
-kubectl exec <pod-name> -- <command>   # Execute command in pod
+kubectl describe pod <pod-name>                    # Show detailed pod information
+kubectl logs <pod-name>                            # Show pod logs
+kubectl logs -f <pod-name>                         # Follow pod logs
+kubectl logs <pod-name> -c <container>             # Show logs for specific container
+kubectl exec -it <pod-name> -- /bin/bash           # Execute shell in pod
+kubectl exec <pod-name> -- <command>               # Execute command in pod
 ```
 
 ### Pod Management
 ```bash
-kubectl create pod <pod-name> --image=<image> # Create a new pod
-kubectl run <pod-name> --image=<image>        # Create and run a pod
-kubectl delete pod <pod-name>                 # Delete a pod
-kubectl port-forward <pod-name> <local-port>:<pod-port> # Port forward
+kubectl create pod <pod-name> --image=<image>             # Create a new pod
+kubectl run <pod-name> --image=<image>                    # Create and run a pod
+kubectl delete pod <pod-name>                             # Delete a pod
+kubectl port-forward <pod-name> <local-port>:<pod-port>   # Port forward
 ```
 
 ---
@@ -212,24 +212,24 @@ kubectl port-forward <pod-name> <local-port>:<pod-port> # Port forward
 
 ### Creating Deployments
 ```bash
-kubectl create deployment <name> --image=<image> # Create deployment
-kubectl run <name> --image=<image> --replicas=3 # Create deployment with replicas
+kubectl create deployment <name> --image=<image>        # Create deployment
+kubectl run <name> --image=<image> --replicas=3         # Create deployment with replicas
 ```
 
 ### Managing Deployments
 ```bash
-kubectl get deployments                      # List deployments
-kubectl describe deployment <name>           # Show deployment details
-kubectl scale deployment <name> --replicas=5 # Scale deployment
-kubectl rollout status deployment <name>     # Check rollout status
-kubectl rollout history deployment <name>    # View rollout history
-kubectl rollout undo deployment <name>       # Rollback to previous version
+kubectl get deployments                                 # List deployments
+kubectl describe deployment <name>                      # Show deployment details
+kubectl scale deployment <name> --replicas=5            # Scale deployment
+kubectl rollout status deployment <name>                # Check rollout status
+kubectl rollout history deployment <name>               # View rollout history
+kubectl rollout undo deployment <name>                  # Rollback to previous version
 ```
 
 ### Updating Deployments
 ```bash
-kubectl set image deployment/<name> <container>=<new-image> # Update image
-kubectl patch deployment <name> -p '{"spec":{"replicas":5}}' # Patch deployment
+kubectl set image deployment/<name> <container>=<new-image>      # Update image
+kubectl patch deployment <name> -p '{"spec":{"replicas":5}}'     # Patch deployment
 ```
 
 ---
@@ -238,13 +238,15 @@ kubectl patch deployment <name> -p '{"spec":{"replicas":5}}' # Patch deployment
 ## Service Operations
 ### Service Management
 ```bash
-kubectl get services            # List all services
-kubectl get svc                 # List all services (short)
-kubectl describe service <name> # Show service details
-kubectl expose deployment <name> --type=LoadBalancer --port=80 # Expose deployment
-kubectl delete service <name>   # Delete service
+kubectl get services                                              # List all services
+kubectl get svc                                                   # List all services (short)
+kubectl describe service <name>                                   # Show service details
+kubectl expose deployment <name> --type=LoadBalancer --port=80    # Expose deployment
+kubectl delete service <name>                                     # Delete service
+```
 
-Service Types
+### Service Types
+```bash
 # ClusterIP (default) - Internal cluster access only
 kubectl expose deployment <name> --port=80 --target-port=8080
 # NodePort - External access via node IP
@@ -260,18 +262,22 @@ kubectl expose deployment <name> --type=LoadBalancer --port=80
 
 ### ConfigMaps
 ```bash
-kubectl create configmap <name> --from-literal=key=value # Create from literal
-kubectl create configmap <name> --from-file=<file>       # Create from file
-kubectl get configmaps                                   # List configmaps
-kubectl describe configmap <name>                        # Show configmap details
+kubectl create configmap <name> --from-literal=key=value           # Create from literal
+kubectl create configmap <name> --from-file=<file>                 # Create from file
+kubectl get configmaps                                             # List configmaps
+kubectl describe configmap <name>                                  # Show configmap details
 ```
 
 ### Secrets
 ```bash
-kubectl create secret generic <name> --from-literal=key=value # Create secret
-kubectl create secret docker-registry <name> --docker-server=<server> --docker-username=<user> --docker-password=<pass>                                # Docker registry secret
-kubectl get secrets              # List secrets
-kubectl describe secret <name>   # Show secret details (values hidden)
+kubectl create secret generic <name> --from-literal=key=value    # Create secret
+kubectl get secrets                                              # List secrets
+kubectl describe secret <name>                                   # Show secret details (values hidden)
+kubectl delete secret <name>                                     # Delete secret
+
+# Create a Docker registry secret
+kubectl create secret docker-registry <name> --docker-server=<server> --docker-username=<user> --docker-password=<pass>
+
 ```
 
 ---
@@ -280,20 +286,20 @@ kubectl describe secret <name>   # Show secret details (values hidden)
 ## Resource Management
 ### Apply and Delete
 ```bash
-kubectl apply -f <file.yaml>      # Apply configuration from file
-kubectl apply -f <directory>/     # Apply all files in directory
-kubectl apply -f <url>            # Apply configuration from URL
-kubectl delete -f <file.yaml>     # Delete resources from file
-kubectl delete -f <directory>/    # Delete all files in directory
-kubectl replace -f <file.yaml>    # Replace resources from file
+kubectl apply -f <file.yaml>                  # Apply configuration from file
+kubectl apply -f <directory>/                 # Apply all files in directory
+kubectl apply -f <url>                        # Apply configuration from URL
+kubectl delete -f <file.yaml>                 # Delete resources from file
+kubectl delete -f <directory>/                # Delete all files in directory
+kubectl replace -f <file.yaml>                # Replace resources from file
 ```
 
 ### Resource Information
 ```bash
-kubectl get all                   # List most resource types
-kubectl get <resource-type>       # List specific resource type
-kubectl describe <resource-type> <name> # Describe specific resource
-kubectl explain <resource-type>   # Show resource documentation
+kubectl get all                               # List most resource types
+kubectl get <resource-type>                   # List specific resource type
+kubectl describe <resource-type> <name>       # Describe specific resource
+kubectl explain <resource-type>               # Show resource documentation
 ```
 
 ---
@@ -303,26 +309,26 @@ kubectl explain <resource-type>   # Show resource documentation
 
 ### Debugging
 ```bash
-kubectl get events --sort-by=.metadata.creationTimestamp # View cluster events
+kubectl get events --sort-by=.metadata.creationTimestamp      # View cluster events
 kubectl top nodes                    # Show node resource usage (requires metrics-server)
-kubectl top pods                     # Show pod resource usage
-kubectl describe node <node-name>    # Show node details
+kubectl top pods                                              # Show pod resource usage
+kubectl describe node <node-name>                             # Show node details
 ```
 
 ### Network Troubleshooting
 ```bash
-kubectl run test-pod --image=busybox --rm -it -- sh # Create temporary test pod
-kubectl exec -it <pod> -- nslookup <service-name>   # DNS lookup from pod
+kubectl run test-pod --image=busybox --rm -it -- sh         # Create temporary test pod
+kubectl exec -it <pod> -- nslookup <service-name>           # DNS lookup from pod
 kubectl port-forward service/<service-name> <local-port>:<service-port> # Port forward service
 ```
 
 
 ### Labels and Selectors
 ```bash
-kubectl label pods <pod-name> <key>=<value>    # Add label to pod
-kubectl label pods <pod-name> <key>-           # Remove label from pod
-kubectl get pods -l <key>=<value>              # Filter by label
-kubectl get pods -l '<key> in (value1,value2)' # Filter by multiple values
+kubectl label pods <pod-name> <key>=<value>            # Add label to pod
+kubectl label pods <pod-name> <key>-                   # Remove label from pod
+kubectl get pods -l <key>=<value>                      # Filter by label
+kubectl get pods -l '<key> in (value1,value2)'         # Filter by multiple values
 ```
 
 ---
@@ -332,20 +338,20 @@ kubectl get pods -l '<key> in (value1,value2)' # Filter by multiple values
 
 ### Persistent Volumes
 ```bash
-kubectl get pv                   # List persistent volumes
-kubectl get pvc                  # List persistent volume claims
-kubectl describe pv <name>       # Show PV details
-kubectl describe pvc <name>      # Show PVC details
+kubectl get pv                                      # List persistent volumes
+kubectl get pvc                                     # List persistent volume claims
+kubectl describe pv <name>                          # Show PV details
+kubectl describe pvc <name>                         # Show PVC details
 ```
 
 ### Jobs and CronJobs
 ```bash
-kubectl create job <name> --image=<image> # Create job
-kubectl get jobs                          # List jobs
+kubectl create job <name> --image=<image>           # Create job
+kubectl get jobs                                    # List jobs
 kubectl create cronjob <name> --image=<image> --schedule="0 */6 * * *"  # Create cronjob
-kubectl get cronjobs                      # List cronjobs
-kubectl describe cronjob <name>           # Show cronjob details
-kubectl delete cronjob <name>             # Delete cronjob
+kubectl get cronjobs                                # List cronjobs
+kubectl describe cronjob <name>                     # Show cronjob details
+kubectl delete cronjob <name>                       # Delete cronjob
 ```
 
 ### Resource Quotas and Limits
