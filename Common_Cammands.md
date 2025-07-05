@@ -44,14 +44,17 @@ kubectl create deployment <deployment_name> --image=<image_name>
 # Create Deployment YAML File in dry run mode
 kubectl create deployment <deployment_name> --image=<image_name> -o yaml > <file_name>.yaml
 
-# Create Service YAML File
-kubectl create service <service-type><service_name> --tcp=<port:target_port> : Create Servicekubectl create service <service-type> <service_name> --tcp=<port:target_port> -o yaml > <file_name>.yaml
+# Create Service
+kubectl create service <service-type><service_name> --tcp=<port:target_port> : Create Service
+
+# Create Service in a YAML File
+kubectl create service <service-type> <service_name> --tcp=<port:target_port> -o yaml > <file_name>.yaml
 
 # Expose Service from Pod/Deployment
 kubectl expose deployment <pod/deployment_name> --type=<service-type> --port=<port> --target-port=<target_port>
 
 # Create ConfigMap from Key-Value Pairs
-kubectl create configmap <configmap_name> --from-literal=<key>=<value> --from-literal=<key>=<value>        
+kubectl create configmap <configmap_name> --from-literal=<key>=<value> --from-literal=<key>=<value>
 
 # Create ConfigMap from File
 kubectl create configmap <configmap_name> --from-file=<file_name>
@@ -60,11 +63,10 @@ kubectl create configmap <configmap_name> --from-file=<file_name>
 kubectl create configmap <configmap_name> --from-env-file=<file_name>  
 
 # Create Secret from Key-Value Pairs
-kubectl create secret generic <secret_name> --from-literal=<key>=<value> --from-literal=<key>=
-<value>               
+kubectl create secret generic <secret_name> --from-literal=<key>=<value> --from-literal=<key>=<value>
 
 # Create Secret from File
-kubectl create secret generic <secret_name> --from-file=<file_name>       
+kubectl create secret generic <secret_name> --from-file=<file_name>
 ```
 
 ### Monitoring Usage Commands:-
