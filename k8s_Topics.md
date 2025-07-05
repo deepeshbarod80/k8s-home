@@ -11,7 +11,6 @@
 * Kubernetes Architecture: Master vs Worker nodes
 * Core Components: kube-apiserver, etcd, kube-scheduler, kube-controller-manager, kubelet, kube-proxy
 * Kubernetes Object Basics:
-
   * Pods
   * ReplicaSets
   * Deployments
@@ -38,11 +37,29 @@
 * Taints and Tolerations
 * Node Affinity & Pod Affinity/Anti-Affinity
 * Service Discovery and DNS
-* Ingress Controllers (e.g., NGINX Ingress)
-* Helm:
+* Ingress and Ingress Controllers (e.g., NGINX Ingress)
+* Helm package manager
+* Secrets
+* Certificates
+* HPA (Horizontal Pod Autoscaler)
+* CRD (Custom Resource Definition) (e.g., Ingress, PodSecurityPolicy, ClusterRole, ClusterRoleBinding, etc)
+* CSI (Container Storage Interface) Driver (e.g., azure disk, aws ebs, gce pd)
+* CNI (Container Network Interface) plugins (e.g., Calico, Weave)
+* Metrics server and node exporter
+* ExternalSecret Operator and ExternalSecret Resource
+* Cluster Issuer 
+* RBAC (Role, RoleBinding, ClusterRole, ClusterRoleBinding)
+* Service Accounts
 
-  * Helm v3 architecture
-  * Writing and using Helm Charts
+> 🔑 Goal: AWS Services Related Topics
+* AWS SM (Secrets manager)
+* AWS KMS (Key management service)
+* AWS CM (Certificate manager)
+* AWS PCA (Private certificate authority)
+* AWS IAM (Identity and Access Management)
+
+
+
 
 ---
 
@@ -57,6 +74,7 @@
 * Custom Resource Definitions (CRDs) and Operators
 * Admission Controllers (Mutating & Validating Webhooks)
 * API Aggregation Layer
+* EKS Pod Identities
 
 ---
 
