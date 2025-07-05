@@ -89,7 +89,6 @@ The workflow for managing Secrets with ESO involves configuring ESO to connect t
 4. **Configure a SecretStore**:
    - Define a `SecretStore` resource to connect ESO to AWS SM:
      ```yaml
-     ```yaml
      apiVersion: external-secrets.io/v1beta1
      kind: SecretStore
      metadata:
@@ -105,15 +104,13 @@ The workflow for managing Secrets with ESO involves configuring ESO to connect t
                serviceAccountRef:
                  name: external-secrets-sa
      ```
-     ```
-     Apply it:
+   - Apply it:
      ```bash
      kubectl apply -f aws-secret-store.yaml
      ```
 
 5. **Define an ExternalSecret**:
    - Create an `ExternalSecret` to sync the AWS SM secret to a Kubernetes Secret:
-     ```yaml
      ```yaml
      apiVersion: external-secrets.io/v1beta1
      kind: ExternalSecret
@@ -138,8 +135,8 @@ The workflow for managing Secrets with ESO involves configuring ESO to connect t
            key: my-k8s-secret
            property: password
      ```
-     ```
-     Apply it:
+
+   - Apply it:
      ```bash
      kubectl apply -f my-external-secret.yaml
      ```
@@ -147,7 +144,6 @@ The workflow for managing Secrets with ESO involves configuring ESO to connect t
 
 6. **Use the Secret in a Pod**:
    - Mount the Secret in a pod:
-     ```yaml
      ```yaml
      apiVersion: v1
      kind: Pod
@@ -170,8 +166,8 @@ The workflow for managing Secrets with ESO involves configuring ESO to connect t
                name: my-secret
                key: password
      ```
-     ```
-     Apply it:
+
+   - Apply it:
      ```bash
      kubectl apply -f my-pod.yaml
      ```
@@ -203,7 +199,6 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
    - Avoid static AWS credentials by using IRSA to associate an IAM role with the ESO ServiceAccount.
    - Example IAM policy for ESO:
      ```json
-     ```json
      {
        "Version": "2012-10-17",
        "Statement": [
@@ -227,7 +222,6 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
        ]
      }
      ```
-     ```
 
 2. **Encrypt Secrets with AWS KMS**:
    - Create a KMS key for encrypting Secrets in AWS SM:
@@ -242,7 +236,6 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
        --region us-east-1
      ```
    - Restrict KMS key access:
-     ```json
      ```json
      {
        "Version": "2012-10-17",
@@ -265,11 +258,9 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
        ]
      }
      ```
-     ```
 
 3. **Enable Kubernetes Secrets Encryption**:
    - Configure the Kubernetes API server to encrypt Secrets at rest using KMS:
-     ```yaml
      ```yaml
      apiVersion: apiserver.config.k8s.io/v1
      kind: EncryptionConfiguration
@@ -284,7 +275,6 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
            region: us-east-1
        - identity: {}
      ```
-     ```
    - Apply to EKS:
      ```bash
      aws eks update-cluster-config \
@@ -295,7 +285,6 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
 
 4. **RBAC for Secret Access**:
    - Create a `Role` to restrict access to Secrets:
-     ```yaml
      ```yaml
      apiVersion: rbac.authorization.k8s.io/v1
      kind: Role
@@ -308,9 +297,8 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
        verbs: ["get", "list"]
        resourceNames: ["my-secret"]
      ```
-     ```
+
    - Bind the role to a user or ServiceAccount:
-     ```yaml
      ```yaml
      apiVersion: rbac.authorization.k8s.io/v1
      kind: RoleBinding
@@ -329,11 +317,9 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
        name: secret-reader
        apiGroup: rbac.authorization.k8s.io
      ```
-     ```
 
 5. **Network Policies**:
    - Restrict network access to pods using Secrets with a `NetworkPolicy`:
-     ```yaml
      ```yaml
      apiVersion: networking.k8s.io/v1
      kind: NetworkPolicy
@@ -357,13 +343,11 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
          - ipBlock:
              cidr: 0.0.0.0/0
              except:
-             - 169.254.169.254/32 # Exclude AWS metadata service
-     ```
+             - 169.254.169.254/32     # Exclude AWS metadata service
      ```
 
 6. **Pod Security Standards**:
    - Enforce Pod Security Standards (PSS) to prevent privileged pods from accessing Secrets:
-     ```yaml
      ```yaml
      apiVersion: policy/v1
      kind: PodSecurityPolicy
@@ -384,7 +368,6 @@ Security is paramount when managing Secrets in Kubernetes. Below are best practi
        - 'secret'
        - 'configMap'
        - 'emptyDir'
-     ```
      ```
 
 7. **Security Best Practices**:
@@ -411,8 +394,8 @@ High availability (HA) ensures that the network and ESO remain operational durin
        --namespace external-secrets \
        --set replicaCount=3
      ```
+
    - Ensure pods are spread across multiple nodes using pod anti-affinity:
-     ```yaml
      ```yaml
      apiVersion: apps/v1
      kind: Deployment
@@ -442,7 +425,6 @@ High availability (HA) ensures that the network and ESO remain operational durin
            - name: external-secrets
              image: ghcr.io/external-secrets/external-secrets:latest
      ```
-     ```
 
 2. **Network HA**:
    - Use an AWS Application Load Balancer (ALB) with an Ingress controller (e.g., `aws-load-balancer-controller`) to ensure network availability for applications accessing Secrets:
@@ -452,8 +434,8 @@ High availability (HA) ensures that the network and ESO remain operational durin
        --namespace kube-system \
        --set clusterName=<cluster-name>
      ```
+     
    - Configure an Ingress to expose applications:
-     ```yaml
      ```yaml
      apiVersion: networking.k8s.io/v1
      kind: Ingress
@@ -476,7 +458,6 @@ High availability (HA) ensures that the network and ESO remain operational durin
                  name: my-app-service
                  port:
                    number: 80
-     ```
      ```
 
 3. **Multi-AZ Deployment**:
@@ -563,7 +544,6 @@ A Kubernetes application running on EKS needs to access a database credential st
 - **Monitoring**:
   - Enable Kubernetes audit logs:
     ```yaml
-    ```yaml
     apiVersion: audit.k8s.io/v1
     kind: Policy
     rules:
@@ -573,7 +553,7 @@ A Kubernetes application running on EKS needs to access a database credential st
         resources: ["secrets"]
       verbs: ["get", "create", "update", "delete"]
     ```
-    ```
+
   - Enable CloudTrail for AWS SM and KMS:
     ```bash
     aws cloudtrail create-trail --name my-k8s-trail --s3-bucket-name <s3-bucket-name> --region us-east-1
