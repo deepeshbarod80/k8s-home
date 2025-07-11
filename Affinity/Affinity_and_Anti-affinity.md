@@ -10,7 +10,6 @@ To provide a deeper understanding of **Node Affinity** and **Anti-Affinity** in 
   - Workload isolation. 
   - MicroServices Isolations
 
-
 ---
 
 ### Overview of Affinity and Anti-Affinity in Microservices
@@ -31,11 +30,11 @@ In a microservices architecture, you typically have multiple independent service
 
 ---
 
-### Advanced Scenarios for Microservices
+## Advanced Scenarios for Microservices
 
 Below are advanced scenarios for using **Node Affinity** and **Anti-Affinity** in a microservices setup, along with detailed examples.
 
-#### Scenario 1: Optimizing Node Placement for Resource-Intensive Microservices
+### **Scenario 1: Optimizing Node Placement for Resource-Intensive Microservices**
 **Requirement**: 
 - You have a microservices architecture with a **machine learning microservice** that requires GPU nodes and a **database microservice** that needs high-memory nodes.
 - You want to ensure these microservices are scheduled on nodes with the appropriate hardware.
@@ -100,7 +99,7 @@ kubectl label nodes node2 memory=high
 
 ---
 
-#### Scenario 2: Co-Locating Microservices for Low Latency
+### **Scenario 2: Co-Locating Microservices for Low Latency**
 **Requirement**:
 - You have a **frontend microservice** and a **cache microservice** (e.g., Redis) that need to communicate frequently. For low latency, they should run on the same node.
 - However, you want to prefer nodes in a specific region (e.g., `us-east`) but allow fallback to other regions if needed.
@@ -173,7 +172,7 @@ spec:
 
 ---
 
-#### Scenario 3: High Availability with Pod Anti-Affinity
+### **Scenario 3: High Availability with Pod Anti-Affinity**
 **Requirement**:
 - You have a **backend microservice** with multiple replicas (e.g., managed by a Deployment). To ensure high availability, you want to spread the replicas across different nodes or availability zones to avoid a single point of failure.
 - You also want to prefer nodes with high CPU capacity but allow fallback to other nodes.
@@ -247,7 +246,7 @@ kubectl label nodes node2 topology.kubernetes.io/zone=us-east-1b
 
 ---
 
-#### Scenario 4: Combining Affinity and Anti-Affinity for Complex Workflows
+### **Scenario 4: Combining Affinity and Anti-Affinity for Complex Workflows**
 **Requirement**:
 - You have a microservices-based e-commerce platform with:
   - **Frontend microservice**: Should run on nodes with SSDs for fast response times.
@@ -347,7 +346,7 @@ spec:
 
 ---
 
-### Best Practices for Affinity and Anti-Affinity in Microservices
+## Best Practices for Affinity and Anti-Affinity in Microservices
 
 1. **Use Hard Rules Sparingly**:
    - Hard rules (`requiredDuringSchedulingIgnoredDuringExecution`) can prevent pods from being scheduled if no nodes match. Use them only when a requirement is non-negotiable (e.g., GPUs for ML workloads).
