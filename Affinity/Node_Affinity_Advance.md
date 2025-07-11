@@ -37,12 +37,14 @@ This section provides a comprehensive exploration of advanced scenarios for usin
 #### Background and Context
 Kubernetes, as of July 12, 2025, offers robust scheduling mechanisms to control pod placement, critical for managing microservices in large-scale clusters. **Node Affinity** allows pods to be scheduled on nodes with specific labels, while **Pod Affinity** and **Pod Anti-Affinity** control placement relative to other pods. These mechanisms support both **required** (hard) and **preferred** (soft) rules, with `requiredDuringSchedulingIgnoredDuringExecution` enforcing strict constraints and `preferredDuringSchedulingIgnoredDuringExecution` allowing fallback options. The following scenarios leverage these features to address complex microservices requirements, drawing from sources like the Kubernetes documentation and practical examples from industry articles.
 
-#### Advanced Scenarios
+---
+
+## **Advanced Scenarios**
 
 Below are six advanced scenarios demonstrating complex scheduling logic for microservices, each with detailed YAML examples wrapped in `<xaiArtifact>` tags for clarity and reusability.
 
 
-##### Scenario 1: Co-locating Microservices for Low Latency
+### **Scenario 1: Co-locating Microservices for Low Latency**
 - **Problem**: A microservices application includes a **frontend service** and a **caching service** (e.g., Redis). To minimize network latency, frontend pods should be scheduled on the same nodes as caching pods.
 - **Solution**: Use **Pod Affinity** with `preferredDuringSchedulingIgnoredDuringExecution` to attract frontend pods to nodes hosting caching pods, ensuring low-latency communication.
 - **Use Case**: Ideal for tightly coupled microservices, such as a web application and its cache, where frequent communication benefits from co-location.
@@ -79,7 +81,7 @@ Below are six advanced scenarios demonstrating complex scheduling logic for micr
 - **Citation**: [The New Stack: Implement Node and Pod Affinity/Anti-Affinity](https://thenewstack.io/implement-node-and-pod-affinity-anti-affinity-in-kubernetes-a-practical-example/)
 
 
-##### Scenario 2: Ensuring High Availability with Anti-Affinity
+### **Scenario 2: Ensuring High Availability with Anti-Affinity**
 - **Problem**: A **database microservice** (e.g., MySQL) requires high availability. Replicas must be spread across different nodes or availability zones to prevent downtime if a node or zone fails.
 - **Solution**: Use **Pod Anti-Affinity** with `requiredDuringSchedulingIgnoredDuringExecution` to ensure replicas are not scheduled on the same node or zone.
 - **Use Case**: Critical for stateful or stateless services where fault tolerance is paramount, such as databases or API servers.
@@ -115,7 +117,7 @@ Below are six advanced scenarios demonstrating complex scheduling logic for micr
 - **Citation**: [Kubernetes Documentation: Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
 
 
-##### Scenario 3: Resource-Based Scheduling
+### **Scenario 3: Resource-Based Scheduling**
 - **Problem**: The cluster has nodes with varied hardware (e.g., high CPU, high memory, GPU). Microservices like a **machine learning service** or **compute-intensive service** need specific node types.
 - **Solution**: Use **Node Affinity** with `requiredDuringSchedulingIgnoredDuringExecution` to schedule pods on nodes with appropriate hardware labels.
 - **Use Case**: Ensures resource-intensive microservices run on nodes with the necessary capabilities, optimizing performance.
@@ -152,7 +154,7 @@ Below are six advanced scenarios demonstrating complex scheduling logic for micr
 - **Citation**: [GeeksforGeeks: Node Affinity in Kubernetes](https://www.geeksforgeeks.org/devops/node-affinity-in-kubernetes/)
 
 
-##### Scenario 4: Balancing Co-location and Distribution
+### **Scenario 4: Balancing Co-location and Distribution**
 - **Problem**: A **web service** depends on a **worker service** for processing tasks. You want web pods to be co-located with worker pods for low latency but also spread web replicas across nodes for high availability.
 - **Solution**: Combine **Pod Affinity** for co-location with **Pod Anti-Affinity** for spreading, using weights to prioritize co-location over distribution.
 - **Use Case**: Balances performance and reliability in multi-tier applications where services need to communicate efficiently but remain resilient.
@@ -195,7 +197,7 @@ Below are six advanced scenarios demonstrating complex scheduling logic for micr
 - **Citation**: [Medium: Understanding Node Affinity, Pod Affinity, and Pod Anti-Affinity](https://medium.com/@prasad.midde3/understanding-node-affinity-pod-affinity-node-selector-and-pod-anti-affinity-in-kubernetes-7899e218ac6d)
 
 
-##### Scenario 5: Complex Logical Rules with OR Logic
+### **Scenario 5: Complex Logical Rules with OR Logic**
 - **Problem**: A microservice can run on nodes with either high CPU or in a specific region (e.g., `us-east-1`). You want to give the scheduler flexibility to choose suitable nodes.
 - **Solution**: Use **Node Affinity** with multiple `nodeSelectorTerms` to implement OR logic, allowing pods to be scheduled on nodes meeting either condition.
 - **Use Case**: Useful for flexible scheduling where pods can operate on nodes with different characteristics, improving resource utilization.
@@ -237,7 +239,7 @@ Below are six advanced scenarios demonstrating complex scheduling logic for micr
 - **Citation**: [Kubernetes Documentation: Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)
 
 
-##### Scenario 6: Hierarchical Dependencies in Multi-Tier Applications
+### **Scenario 6: Hierarchical Dependencies in Multi-Tier Applications**
 - **Problem**: A microservices architecture includes **frontend**, **backend**, and **database** services. The frontend depends on the backend, and the backend depends on the database. You want to co-locate these services for performance while spreading replicas for high availability.
 - **Solution**: Use chained **Pod Affinity** to co-locate services and **Pod Anti-Affinity** to spread replicas, with weights to balance priorities.
 - **Use Case**: Ideal for multi-tier applications with inter-service dependencies, ensuring low latency and fault tolerance.
@@ -344,7 +346,10 @@ Below are six advanced scenarios demonstrating complex scheduling logic for micr
   - The frontend uses `podAffinity` to prefer nodes with backend pods and `podAntiAffinity` to spread its replicas, with a lower weight (50) to prioritize co-location over spreading.
 - **Citation**: [Densify: The Guide to Kubernetes Affinity by Example](https://www.densify.com/kubernetes-autoscaling/kubernetes-affinity/)
 
-#### Comparative Analysis
+
+---
+
+### Comparative Analysis
 The following table summarizes the scenarios and their use cases:
 
 | **Scenario**                     | **Purpose**                                                                 | **Key Mechanism**                     | **Use Case**                                      |
@@ -356,7 +361,7 @@ The following table summarizes the scenarios and their use cases:
 | **Complex Logical Rules**            | Flexible scheduling with OR logic                                           | Node Affinity with multiple terms     | Flexible node selection for varied requirements  |
 | **Hierarchical Dependencies**         | Co-locate dependent services, spread replicas                               | Chained Pod Affinity/Anti-Affinity    | Multi-tier applications with dependencies        |
 
-#### Best Practices and Guidelines
+### Best Practices and Guidelines
 - **Balance Required and Preferred Rules**: Use `requiredDuringSchedulingIgnoredDuringExecution` for strict constraints (e.g., GPU nodes) and `preferredDuringSchedulingIgnoredDuringExecution` for flexibility to avoid scheduling failures.
 - **Assign Weights Strategically**: Higher weights (e.g., 100) for critical rules (e.g., co-location) and lower weights (e.g., 50) for secondary preferences (e.g., spreading).
 - **Label Nodes Consistently**: Use meaningful labels (e.g., `hardware=gpu`, `region=us-east-1`) and automate labeling with tools like Kubernetes Node Labels.
