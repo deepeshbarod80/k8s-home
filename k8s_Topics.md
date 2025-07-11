@@ -5,6 +5,52 @@
 
 ## 🧠 **Level 1: Kubernetes Basics (Foundational)**
 
+> 🔑 Goal: K8s Components
+
+- Master Node (Contol Plane)
+  * API Server
+  * Scheduler
+  * ETCD 
+  * Controller Manager
+  * Cloud Controller Manager
+
+- Worker Node
+  * Kubelet
+  * KubeProxy
+  * Container Runtime (e.g., Docker)
+
+- Core Objects
+  * Pods
+  * ReplicaSets
+  * Deployments
+  * StatefulSets
+  * DaemonSets
+  * Services (ClusterIP, NodePort, LoadBalancer) 
+  * ConfigMaps
+  * Secrets
+  * Namespaces (ns)
+  * Ingress
+  * Persistent Volume Claim (pvc)
+  * Jobs & Cronjobs
+  * 
+
+- Common Controllers
+  * Ingress Controller
+  * Replication Controller
+  * Admission Controller
+  * HPA Controller
+  * VPA controller
+  * Cronjob Controller
+  * Deployment Controller
+  * Replicaset Controller
+  * Statefulset Controller
+  * Daemonset Controller
+  * 
+
+
+
+
+
 > 🔑 Goal: Understand K8s architecture and core objects
 
 * What is Kubernetes? Benefits & Use Cases
@@ -15,7 +61,8 @@
   * ReplicaSets
   * Deployments
   * Services (ClusterIP, NodePort, LoadBalancer)
-  * ConfigMaps and Secrets
+  * ConfigMaps
+  * Secrets
 * Namespaces
 * Labels & Selectors
 * Lifecycle of a Pod
@@ -84,8 +131,8 @@
 
 * Role-Based Access Control (RBAC)
 * Network Policies
-* PodSecurity Standards (restricted, baseline, privileged)
-* PodSecurityPolicies (deprecated) → OPA Gatekeeper / Kyverno
+* PodSecurity Standards (PSS) [restricted, baseline, privileged]
+* PodSecurityPolicies (PSP) [(deprecated) → OPA Gatekeeper / Kyverno]
 * TLS Certificates and Encryption in Transit
 * Secret Management (external providers like HashiCorp Vault, AWS Secrets Manager)
 * Image Scanning (Trivy, Clair, Aqua)

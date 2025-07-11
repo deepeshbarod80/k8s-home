@@ -1,7 +1,8 @@
 
-```sh
+
 kubectl taint nodes node1 key1=value1:NoSchedule
 
+```yaml
 # Basic Addon in pod file
 tolerations:
 - key: "key1"
