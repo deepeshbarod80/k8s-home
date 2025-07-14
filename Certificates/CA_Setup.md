@@ -3,17 +3,17 @@
 
 ---
 
-## Introduction
+## **Introduction**
 
 Managing certificates in Kubernetes (K8s) is streamlined with tools like **cert-manager**, which automates the provisioning, renewal, and management of TLS certificates. Below is a comprehensive guide on how to manage certificates in Kubernetes, integrate with **AWS Certificate Manager (ACM)** or **AWS Private Certificate Authority (PCA)**, and configure user permissions for secure certificate management.
 
 ---
 
-## 1. Managing Certificates in Kubernetes with cert-manager
+## **1. Managing Certificates in Kubernetes with cert-manager**
 
 **cert-manager** is a widely adopted Kubernetes add-on that automates the issuance and renewal of TLS certificates. It integrates with various certificate authorities (CAs), including public CAs like Let’s Encrypt and private CAs like AWS PCA.
 
-### Steps to Set Up cert-manager
+### **Steps to Set Up cert-manager**
 
 1. **Install cert-manager**:
    - Use Helm to install cert-manager in your Kubernetes cluster:
@@ -110,11 +110,11 @@ Managing certificates in Kubernetes (K8s) is streamlined with tools like **cert-
 ---
 
 
-## 2. Integrating cert-manager with AWS Certificate Manager (ACM) or AWS Private CA
+## **2. Integrating cert-manager with AWS Certificate Manager (ACM) or AWS Private CA**
 
 AWS Certificate Manager (ACM) manages public and private certificates, but it’s primarily designed for AWS services like Elastic Load Balancers (ELBs) and CloudFront. For Kubernetes, **AWS Private CA** (ACM PCA) is more relevant, as it integrates with cert-manager to issue certificates for Kubernetes workloads.
 
-### Integration with AWS Private CA
+### **Integration with AWS Private CA**
 
 1. **Set Up AWS Private CA**:
    - Create a Private CA in the AWS Management Console or via the AWS CLI:
@@ -203,17 +203,18 @@ AWS Certificate Manager (ACM) manages public and private certificates, but it’
 6. **Use the Certificate**:
    - The certificate is stored in a Kubernetes Secret (`example-tls`) and can be used in Ingress resources or mounted to pods, as described earlier.
 
-### Notes on AWS ACM Integration
+### **Notes on AWS ACM Integration**
 - **Public ACM Certificates**: AWS ACM public certificates are not directly supported by cert-manager because ACM manages private keys internally and doesn’t allow exporting them. They are primarily for AWS services like ALB, CloudFront, or API Gateway.
 - **Workaround**: Use AWS PCA for Kubernetes workloads, as it allows cert-manager to manage certificates dynamically. Alternatively, store ACM certificates in **AWS Secrets Manager** and sync them to Kubernetes Secrets using a custom controller or the **External Secrets Operator**.
 
 ---
 
-## 3. Configuring User Permissions for Certificate Management
+
+## **3. Configuring User Permissions for Certificate Management**
 
 To securely manage certificates in Kubernetes, you need to configure **Kubernetes RBAC** (Role-Based Access Control) and **AWS IAM** permissions.
 
-### Kubernetes RBAC for cert-manager
+### **Kubernetes RBAC for cert-manager**
 
 1. **Create a ServiceAccount for cert-manager**:
    - cert-manager requires a ServiceAccount to interact with the Kubernetes API:
@@ -296,7 +297,7 @@ To securely manage certificates in Kubernetes, you need to configure **Kubernete
        apiGroup: rbac.authorization.k8s.io
      ```
 
-### AWS IAM Permissions for AWS PCA
+### **AWS IAM Permissions for AWS PCA**
 
 - Ensure the IAM role used by cert-manager or the AWS PCA Issuer has the necessary permissions:
   ```json
@@ -317,7 +318,7 @@ To securely manage certificates in Kubernetes, you need to configure **Kubernete
   ```
 - Use IRSA to associate this IAM role with the cert-manager ServiceAccount, as shown earlier.
 
-### Best Practices for Permissions
+### **Best Practices for Permissions**
 - **Least Privilege**: Limit RBAC and IAM permissions to only what is necessary.
 - **Namespace Scoping**: Use `Role` and `RoleBinding` instead of `ClusterRole` for namespace-specific access.
 - **Secret Access**: Restrict access to Secrets containing certificates using RBAC:
@@ -338,7 +339,7 @@ To securely manage certificates in Kubernetes, you need to configure **Kubernete
 ---
 
 
-## 4. Additional Considerations
+## **4. Additional Considerations**
 
 - **Certificate Storage**: Certificates are stored in Kubernetes Secrets. For enhanced security, use **AWS Secrets Manager** to store sensitive certificate data and sync it to Kubernetes Secrets using tools like the External Secrets Operator.
 - **Monitoring and Logging**: Integrate cert-manager with monitoring tools (e.g., Prometheus) to track certificate issuance and renewal events.
