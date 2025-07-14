@@ -348,7 +348,7 @@ To securely manage certificates in Kubernetes, you need to configure **Kubernete
 
 ---
 
-## References
+## **References**
 - Kubernetes certificate management:[](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/)
 - AWS Private CA integration:[](https://aws.amazon.com/blogs/security/tls-enabled-kubernetes-clusters-with-acm-private-ca-and-amazon-eks-2/)[](https://docs.aws.amazon.com/privateca/latest/userguide/PcaKubernetes.html)[](https://github.com/cert-manager/aws-privateca-issuer)
 - cert-manager documentation:[](https://github.com/cert-manager/cert-manager)
