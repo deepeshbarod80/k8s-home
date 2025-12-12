@@ -30,6 +30,7 @@
   * Secrets
   * Namespaces (ns)
   * Ingress
+  * Persistant Volume
   * Persistent Volume Claim (pvc)
   * Jobs & Cronjobs
   * 
