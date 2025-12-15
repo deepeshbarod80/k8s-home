@@ -172,6 +172,8 @@ Check NodePort:
 ```bash
 kubectl get svc -n istio-system
 ```
+
+#### If ingress-gateway service is not on nodeport then you need to forward it's port.
 Example output:
 ```
 istio-gateway-istio ... 80:30059/TCP
