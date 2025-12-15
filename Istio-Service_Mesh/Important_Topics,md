@@ -1,0 +1,42 @@
+## ✅ Important Topics in Istio Service Mesh
+- Envoy Proxy
+- Isiod
+- Egress Gateway
+- Ingress Gateway
+- Sidecar Containers
+- mTLS - Mutual TLS Certification
+- Circuit Breaking
+- Service to Service Communication
+- Traffic Management
+- Deployment Strategies
+ - Blue / Green
+ - Canary
+ - A/B Testing
+- Observability
+- Advanced Networking in cluster using istio
+- Security in service communication
+- Gateway API with Istio
+- Policy Enforcement
+- Telemetry and Monitoring
+- Custom Resource Definitions (CRDs) in Istio
+- Istio Operators
+- Autoscaling with Istio
+- Integrating Istio with CI/CD Pipelines
+
+### ✅ Important Istio CRDs
+- Virtual services
+- Destination rules
+- Gateways
+- Service entries
+- Sidecars
+---
+
+
+
+
+Certifications:
+
+1. AWS Associate form AWS
+2. Certificate of Kubernetes administrator
+3. Certificate of Terraform Administrator
+4. Istio Certified Associate

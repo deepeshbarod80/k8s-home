@@ -35,9 +35,14 @@ networking:
   disableDefaultCNI: true
   podSubnet: "192.168.0.0/16"   # Matches Calico default
 nodes:
-  - role: control-plane
-  - role: worker
-  - role: worker
+- role: control-plane
+  image: kindest/node:v1.34.0
+- role: worker
+  image: kindest/node:v1.34.0
+- role: worker
+  image: kindest/node:v1.34.0
+- role: worker
+  image: kindest/node:v1.34.0
 ```
 
 Create the cluster:
