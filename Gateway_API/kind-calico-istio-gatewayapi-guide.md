@@ -7,10 +7,41 @@ This guide walks you through setting up a **Kind cluster** with **Calico CNI**, 
 ## ✅ 1. Prerequisites
 Install required tools:
 
+### Install Docker
 ```bash
 # Docker
 sudo apt-get update && sudo apt-get install -y docker.io
 
+# Add Docker's official GPG key:
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+# Restart the wsl
+reboot
+```
+
+---
+
+
+## ✅ 2. Kubernetes installation in local
+```bash
 # Kind
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
 chmod +x ./kind && sudo mv ./kind /usr/local/bin/kind
@@ -25,7 +56,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 ---
 
-## ✅ 2. Create Kind Cluster with Calico
+## ✅ 3. Create Kind Cluster with Calico
 Create a config file `kind-calico-config.yaml`:
 
 ```yaml
@@ -63,7 +94,7 @@ kubectl get nodes
 
 ---
 
-## ✅ 3. Install Istio
+## ✅ 4. Install Istio
 Download Istio:
 ```bash
 curl -L https://istio.io/downloadIstio | sh -
@@ -80,7 +111,7 @@ kubectl get pods -n istio-system
 
 ---
 
-## ✅ 4. Install Gateway API CRDs
+## ✅ 5. Install Gateway API CRDs
 ```bash
 kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.0.0"
 kubectl get crd | grep gateway
@@ -88,8 +119,9 @@ kubectl get crd | grep gateway
 
 ---
 
-## ✅ 5. Create GatewayClass and Gateway
-Create `istio-gatewayclass.yaml`:
+## ✅ 6. Create GatewayClass and Gateway
+#### Create `istio-gatewayclass.yaml`:
+
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
@@ -103,7 +135,8 @@ Apply:
 kubectl apply -f istio-gatewayclass.yaml
 ```
 
-Create `istio-gateway.yaml`:
+#### Create `istio-gateway.yaml`:
+
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -120,12 +153,13 @@ spec:
         namespaces:
           from: All
 ```
-Apply:
+
+#### Apply:
 ```bash
 kubectl apply -f istio-gateway.yaml
 ```
 
-Label Gateway with Istio revision:
+#### Label Gateway with Istio revision:
 ```bash
 kubectl label gateway istio-gateway -n istio-system istio.io/rev=default --overwrite
 ```
